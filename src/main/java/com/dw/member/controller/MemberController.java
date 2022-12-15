@@ -2,6 +2,9 @@ package com.dw.member.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dw.member.model.Member;
 import com.dw.member.repository.MemberRepo;
+import com.fasterxml.jackson.core.sym.Name;
 
 @RestController
 public class MemberController {
-
+	
 	@Autowired
 	MemberRepo repo;
 	
+	@PostMapping("/api/v1/login")
+	public boolean callLogin(@RequestBody Member member, HttpServletRequest request) {
+		Member m = repo.findByuserIdAndUserPassword(member.getUserId(), member.getUserPassword());
+		if (m != null) {
+			HttpSession session = request.getSession(); // 세션 불러오기
+			session.setAttribute("userId", session); // 세션에 사용자 아이디 저장
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	// 전체조회
 	@GetMapping("/members")
 	public List<Member> callAllMembers(){

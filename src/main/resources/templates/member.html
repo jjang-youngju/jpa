@@ -1,180 +1,193 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>Insert title here</title>
-<style type="text/css">
-body{
-	width: 100%;
-}
-h1{
-	width: 1200px;
-	text-align: center;
-}
-table {
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	width: 1200px;
-}
+  <head>
+    <meta charset="utf-8" />
+    <title>Insert title here</title>
+    <style type="text/css">
+      body {
+        width: 100%;
+      }
+      h1 {
+        width: 1200px;
+        text-align: center;
+      }
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 1200px;
+      }
 
-td, th {
-	border: 1px solid #dddddd;
-	text-align: center;
-	padding: 8px;
-}
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+      }
 
-tr:nth-child(even) {
-	background-color: #dddddd;
-}
-tr:hover{
-	cursor: pointer;
-}
-</style>
-</head>
-<body>
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      tr:hover {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>member 추가</h3>
+    <input id="age" type="text" placeholder="나이를 입력하세요." />
+    <input id="name" type="text" placeholder="이름을 입력하세요." />
+    <button type="button" onclick="doJoin()">추가</button>
 
-	<h3>member 추가</h3>
-	<input id="age" type="text" placeholder="나이를 입력하세요.">
-	<input id="name" type="text" placeholder="이름을 입력하세요.">
-	<button type="button" onclick="doJoin()">추가</button>
-	
-	<h3>member 수정</h3>
-	<input id="u_id" type="text" placeholder="아이디를 입력해주세요...">
-	<input id="u_age" type="text" placeholder="나이를 입력해주세요...">
-	<input id="u_name" type="text" placeholder="이름을 입력해주세요...">
-	<button type="button" onclick="doUpdate()">수정</button>
-	
-	<h3>member 삭제</h3>
-	<input id="d_id" type="text" placeholder=" 아이디를 입력해주세요...">
-	<button type="button" onclick="doDelete()">삭제</button>
-	
-	<h3>member 상세조회</h3>
-	<!-- disabled - input에 입력 막는거 -->
-	<input id="f_id" type="text" disabled="disabled" placeholder=" 아이디를 입력해주세요..."> 
-	<input id="f_age" type="text" disabled="disabled" placeholder="나이를 입력해주세요...">
-	<input id="f_name" type="text" disabled="disabled" placeholder="이름을 입력해주세요...">
-	
-	<h1>member목록</h1>
-		<table id="data">
-			<th>아이디</th>
-			<th>나이</th>
-			<th>이름</th>
-			<th>부서이름</th>
-		</table>
+    <h3>member 수정</h3>
+    <input id="u_id" type="text" placeholder="아이디를 입력해주세요..." />
+    <input id="u_age" type="text" placeholder="나이를 입력해주세요..." />
+    <input id="u_name" type="text" placeholder="이름을 입력해주세요..." />
+    <button type="button" onclick="doUpdate()">수정</button>
 
-</body>
-<script src="https://code.jquery.com/jquery-3.6.1.js"
-	integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
-	crossorigin="anonymous"></script>
-<script type="text/javascript">
-	callMyAPI(); // 함수호출
-	
-	const API_KEY = '8a2122e8162dbef04694b9c3e0b6cdee'
-	
-	function callMyAPI() {
-		//ajax : 백엔드와 프론트가 통신하는 기능!
-		//type : GET == Controller에 GetMapping
-		$.ajax({
-			url : '/members',
-			type : 'GET',
-			dataType : 'json',
-			success : function(response) {
-				console.log(response)
-				for ( var i in response) {
-					let tr = $("<tr onclick='getFind( "+response[i].id+" )'></tr>");
-					let id = $("<td>"+ response[i].id +"</td>");
-					let age = $("<td>" + response[i].age + "</a></td>");
-					let name = $("<td>" + response[i].name + "</td>");
-					let dname = $("<td>" + response[i].dept.dname + "</td>");
-					tr.append(id);
-					tr.append(age);
-					tr.append(name);
-					tr.append(dname);
-					$('#data').append(tr);
-				}
-	
-			}
-		});
-	}
-	
-	function doJoin(){
-		var age = $('#age').val();
-		var name = $('#name').val();
+    <h3>member 삭제</h3>
+    <input id="d_id" type="text" placeholder=" 아이디를 입력해주세요..." />
+    <button type="button" onclick="doDelete()">삭제</button>
 
-		var jsonData = {
-			"age" : age,
-			"name" : name
-		}
+    <h3>member 상세조회</h3>
+    <!-- disabled - input에 입력 막는거 -->
+    <input
+      id="f_id"
+      type="text"
+      disabled="disabled"
+      placeholder=" 아이디를 입력해주세요..."
+    />
+    <input
+      id="f_age"
+      type="text"
+      disabled="disabled"
+      placeholder="나이를 입력해주세요..."
+    />
+    <input
+      id="f_name"
+      type="text"
+      disabled="disabled"
+      placeholder="이름을 입력해주세요..."
+    />
 
-		//AJAX 호출
-		$.ajax({
-			url : '/member',
-			contentType : 'application/json',//서버에 json타입으로 보낼 예정(요청)
-			type : 'POST',
-			data : JSON.stringify(jsonData),
-			dataType : 'json',
-			success : function(response) {
-				alert('멤버추가 완료');
-				location.reload(); //새로고침
-			}
-		})
-	}
-	
-	function doUpdate(){
-		var age = $('#u_age').val();
-		var name = $('#u_name').val();
-	 	var id = $('#u_id').val();
-		var jsonData = {
-				"age" : age,
-				"name" : name,
-				"id" :id
-		};
+    <h1>member목록</h1>
+    <table id="data">
+      <th>아이디</th>
+      <th>나이</th>
+      <th>이름</th>
+      <th>부서이름</th>
+    </table>
+  </body>
+  <script
+    src="https://code.jquery.com/jquery-3.6.1.js"
+    integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"
+  ></script>
+  <script type="text/javascript">
+    callMyAPI(); // 함수호출
 
-		$.ajax({
-			url : '/member',
-			type : 'PATCH',
-			contentType : 'application/json',//서버에 json타입으로 보낼 예정(요청)
-			data : JSON.stringify(jsonData),
-			dataType : 'json',
-			success : function(response) {
-				alert('멤버수정 완료');
-				location.reload(); //새로고침
-			}
-		});
-	}
-	
-	function doDelete(){
-		var d_id = $('#d_id').val();
-		if (d_id == '') {
-			alert('아이디를 입력해주세요.');
-			$('#d_id').focus();
-			return false;
-		}
-		// 사원삭제 ajax 연결하기
-		$.ajax({
-			url : '/member/' + d_id,
-			type : 'DELETE',
-			dataType : 'json',
-			success : function(response) {
-				alert(' 멤버삭제완료 ')
-				location.reload(); //새로고침
-			}
-		});
-	}
-	
-	function getFind(f_id){
-		$.ajax({
-			url : '/member/'+f_id,
-			type : 'GET',
-			dataType : 'json',
-			success : function(response) {
-			 	$('#f_id').val(response.id);
-				$('#f_age').val(response.age);
-				$('#f_name').val(response.name);
-				
-			}
-		});
-	}
-	
-</script>
+    const API_KEY = '8a2122e8162dbef04694b9c3e0b6cdee';
+
+    function callMyAPI() {
+      //ajax : 백엔드와 프론트가 통신하는 기능!
+      //type : GET == Controller에 GetMapping
+      $.ajax({
+        url: '/members',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+          console.log(response);
+          for (var i in response) {
+            let tr = $("<tr onclick='getFind( " + response[i].id + " )'></tr>");
+            let id = $('<td>' + response[i].id + '</td>');
+            let age = $('<td>' + response[i].age + '</a></td>');
+            let name = $('<td>' + response[i].name + '</td>');
+            let dname = $('<td>' + response[i].dept.dname + '</td>');
+            tr.append(id);
+            tr.append(age);
+            tr.append(name);
+            tr.append(dname);
+            $('#data').append(tr);
+          }
+        },
+      });
+    }
+
+    function doJoin() {
+      var age = $('#age').val();
+      var name = $('#name').val();
+
+      var jsonData = {
+        age: age,
+        name: name,
+      };
+
+      //AJAX 호출
+      $.ajax({
+        url: '/member',
+        contentType: 'application/json', //서버에 json타입으로 보낼 예정(요청)
+        type: 'POST',
+        data: JSON.stringify(jsonData),
+        dataType: 'json',
+        success: function (response) {
+          alert('멤버추가 완료');
+          location.reload(); //새로고침
+        },
+      });
+    }
+
+    function doUpdate() {
+      var age = $('#u_age').val();
+      var name = $('#u_name').val();
+      var id = $('#u_id').val();
+      var jsonData = {
+        age: age,
+        name: name,
+        id: id,
+      };
+
+      $.ajax({
+        url: '/member',
+        type: 'PATCH',
+        contentType: 'application/json', //서버에 json타입으로 보낼 예정(요청)
+        data: JSON.stringify(jsonData),
+        dataType: 'json',
+        success: function (response) {
+          alert('멤버수정 완료');
+          location.reload(); //새로고침
+        },
+      });
+    }
+
+    function doDelete() {
+      var d_id = $('#d_id').val();
+      if (d_id == '') {
+        alert('아이디를 입력해주세요.');
+        $('#d_id').focus();
+        return false;
+      }
+      // 사원삭제 ajax 연결하기
+      $.ajax({
+        url: '/member/' + d_id,
+        type: 'DELETE',
+        dataType: 'json',
+        success: function (response) {
+          alert(' 멤버삭제완료 ');
+          location.reload(); //새로고침
+        },
+      });
+    }
+
+    function getFind(f_id) {
+      $.ajax({
+        url: '/member/' + f_id,
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+          $('#f_id').val(response.id);
+          $('#f_age').val(response.age);
+          $('#f_name').val(response.name);
+        },
+      });
+    }
+  </script>
 </html>

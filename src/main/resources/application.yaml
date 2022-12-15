@@ -1,12 +1,11 @@
-
-spring :
-  datasource :
-    driver-class-name : com.mysql.cj.jdbc.Driver
-    url : jdbc:mysql://localhost:3306/dw_501
-    username : root
-    password : 01037578235
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dw_501
+    username: root
+    password: 01037578235
   jpa:
-   database: mysql
-   generate-ddl: true
-   hibernate.ddl.auto: update
-   show-sql: true
+    database: mysql
+    generate-ddl: true
+    hibernate.ddl.auto: update
+    show-sql: true
