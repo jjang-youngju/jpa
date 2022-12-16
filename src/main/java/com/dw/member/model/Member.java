@@ -31,7 +31,7 @@ public class Member {
 	private String userPassword;
 	
 	//@JoinColumn => member테이블에 dept_id라는 컬럼(FK)생성
-	@ManyToOne
+	@ManyToOne                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 	@JoinColumn(name="dept_id")
 	private Dept dept;
 	
