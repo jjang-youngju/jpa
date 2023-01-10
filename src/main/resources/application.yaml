@@ -9,3 +9,8 @@ spring:
     generate-ddl: true
     hibernate.ddl.auto: update
     show-sql: true
+aws:
+  s3:
+    access-id: YOUR_ID
+    access-pw: YOUR_PW
+    bucket: maetalteam.dev
